@@ -23,6 +23,13 @@ button {
     margin-top: 4px;
 }
 
+#delete-btn {
+    color: #5f9341;
+    background-color: white;
+    border: 1px solid #5f9341;
+    padding: 9px 19px;
+}
+
 ul {
     margin-top: 20px;
     list-style: none;
