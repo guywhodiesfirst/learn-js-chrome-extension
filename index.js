@@ -6,7 +6,7 @@ let notes = []
 
 let localNotes= JSON.parse(localStorage.getItem("myNotes"))
 if(localNotes) {
-    urls = localNotes
+    notes = localNotes
     renderArray(notes)
 }
 
@@ -19,6 +19,7 @@ inputBtn.addEventListener("click", function() {
     }
 })
 
+// TODO: add delete specific note button
 deleteBtn.addEventListener("dblclick", function() {
     localNotes = []
     notes = []
