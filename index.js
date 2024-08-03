@@ -2,6 +2,7 @@ const inputBtn = document.getElementById("input-btn")
 const inputEl = document.getElementById("input-el")
 const listEl = document.getElementById("list-el")
 const deleteBtn = document.getElementById("delete-btn")
+const tabBtn = document.getElementById("tab-btn")
 let notes = []
 
 let localNotes= JSON.parse(localStorage.getItem("myNotes"))
@@ -10,7 +11,33 @@ if(localNotes) {
     renderArray(notes)
 }
 
-inputBtn.addEventListener("click", function() {
+function getActiveTabUrl(callback) {
+    if (typeof chrome !== 'undefined' && chrome.tabs) {
+      chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        if(tabs.length > 0)
+            callback(tabs[0].url)
+    })
+    } else if (typeof browser !== 'undefined' && browser.tabs) {
+        browser.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        if(tabs.length > 0)
+            callback(tabs[0].url)
+    })
+    } else {
+      console.error('Unsupported browser');
+    }
+}
+  
+tabBtn.addEventListener("click", () => {
+    getActiveTabUrl((url) => {
+        if(url) {
+            notes.push(url)
+            localStorage.setItem("myNotes", JSON.stringify(notes))
+            renderArray(notes)
+        }
+    })
+})
+
+inputBtn.addEventListener("click", () => {
     if(inputEl.value) {
         notes.push(inputEl.value)
         localStorage.setItem("myNotes", JSON.stringify(notes))
@@ -20,7 +47,7 @@ inputBtn.addEventListener("click", function() {
 })
 
 // TODO: add delete specific note button
-deleteBtn.addEventListener("dblclick", function() {
+deleteBtn.addEventListener("dblclick", () => {
     localNotes = []
     notes = []
     localStorage.removeItem("myNotes")
